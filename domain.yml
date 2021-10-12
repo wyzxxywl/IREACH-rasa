@@ -5,30 +5,72 @@ intents:
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - start_first_session # enter "/start_first_session" after running rasa shell to start the first session
+  - inform
+entities:
+  - stress_level
+
+# remember to add slots after define the story
+slots:
+  identify_stress_level:
+    type: text
+    auto_fill: false
+    influence_conversation: false
+  stress_level:
+    type: text
+    auto_fill: true
+    influence_conversation: false
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Hello {name}!"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_ireach_intro:
+  - text: "Welcome to the Psychosis iREACH training tool. This platform was co-designed by experts in evidence-based treatments for psychosis, software designers and engineers, as well as family and friends of individuals who experience psychosis."
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+  utter_tool_explanation:
+  - text: "The iREACH training tool is intended to help bring Psychosis REACH skills to life while helping you practice in a low-risk virtual environment. As you navigate through the tool, you'll have opportunities to practice with an avatar named Alfie. You'll receive feedback as you go."
 
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_check_in_feeling:
+  - text: "Before you dive in, take a moment to check in on how you're feeling."
+
+  utter_ask_identify_stress_level:
+  - buttons:
+    - title: "High"
+      payload: '/inform{{"stress_level": "high"}}'
+    - title: "Moderate"
+      payload: '/inform{{"stress_level": "moderate"}}'
+    - title: "Low"
+      payload: '/inform{{"stress_level": "low"}}'
+    text: "Choose from the below options that best describe your stress level"
+
+  utter_gj_check_lable:
+  - text: "Great job checking in and labeling your stress level. This is a critical skill for maintaining health and wellbeing as a caregiver."
+
+  utter_high_stress_strategy:
+  - text: "Incorporating stress reduction exercises can help you ensure that the acute stressors that you deal with don't lead to chronic stress. Set an alarm on your phone 2-3 times per day to stop and use a stress reduction exercise. Since you indicated that your stree level is high right now, <click here> to practice a guided exercise before proceeding."
+
+  utter_moderate_stress_strategy:
+  - text: "Taking the time to write down your worry thoughts can help you get unstuck from unproductive worry. Try it now. Once you've written down a list of worry thoughts running through your mind, practice repeating "I am not my thoughts. Just because I think it doesn't make it true.""
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "Bye!"
+  - text: "Talk to you next time."
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  utter_nice_to_hear:
+  - text: "Nice to hear!"
 
+actions:
+  - action_stress_recommendation
+
+forms:
+  emotion_identification_form:
+    required_slots:
+      identify_stress_level:
+        - type: from_text
+
+config:
+  store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

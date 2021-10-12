@@ -2,29 +2,14 @@ version: "2.0"
 
 stories:
 
-- story: happy path
+- story: Initial Session
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
-
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
-
-- story: sad path 2
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
-  - action: utter_goodbye
+    - intent: start_first_session
+    - action: utter_greet
+    - action: utter_ireach_intro
+    - action: utter_tool_explanation
+    - action: utter_check_in_feeling #we can group this above four utterance into one custom action if applicable to other sessions
+    - action: emotion_identification_form
+    - active_loop: emotion_identification_form
+    - active_loop: null
+    - action: action_stress_recommendation
